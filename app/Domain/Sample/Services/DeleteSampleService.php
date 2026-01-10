@@ -2,7 +2,7 @@
 
 namespace App\Domain\Sample\Services;
 
-use App\Domain\Sample\Model\Sample;
+use App\Domain\Sample\Models\Sample;
 use App\Domain\Sample\Repositories\SampleRepositoryInterface;
 
 class DeleteSampleService

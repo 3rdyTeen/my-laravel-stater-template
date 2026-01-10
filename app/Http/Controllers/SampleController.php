@@ -2,49 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\Sample\Model\Sample;
+use App\Domain\Sample\Models\Sample;
 use App\Domain\Sample\Services\AllSamplesService;
 use App\Domain\Sample\Services\CreateSampleService;
 use App\Domain\Sample\Services\DeleteSampleService;
 use App\Domain\Sample\Services\UpdateSampleService;
 use App\Http\Requests\StoreSampleRequest;
 use App\Http\Requests\UpdateSampleRequest;
+use App\Support\Helpers\ApiResponse;
 
 class SampleController extends Controller
 {
     public function index()
     {
-        return response('Hello World');
+        return ApiResponse::success('Hello World!!');
     }
 
     public function store(StoreSampleRequest $request, CreateSampleService $service)
     {
         $sample = $service->execute($request->toDto());
-
-        return response()->json($sample, 201);
+        return ApiResponse::success('Successfull!!', $sample);
     }
 
     public function show(Sample $sample)
     {
-        return response()->json($sample);
+        return ApiResponse::success('Successfull!!', $sample);
     }
 
     public function list(AllSamplesService $service)
     {
-        return response()->json($service->execute());
+        return ApiResponse::success('Successfull!!', $service->execute());
     }
 
     public function update(UpdateSampleRequest $request, UpdateSampleService $service, string $id)
     {
         $sample = $service->execute($id, $request->toDto());
-
-        return response()->json($sample);
+        return ApiResponse::success('Successfull!!', $sample);
     }
 
-    public function destroy(Sample $sample, DeleteSampleService $action)
+    public function destroy(Sample $sample, DeleteSampleService $service)
     {
-        $action->execute($sample);
-
-        return response()->json(null, 204);
+        $service->execute($sample);
+        return ApiResponse::success('Successfull!!', null, 204);
     }
 }
