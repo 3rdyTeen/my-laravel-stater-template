@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Datas;
+namespace App\DTOs;
 
-class SampleData
+class CreateSampleDTO
 {
     public function __construct(
         public string $title,

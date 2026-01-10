@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Sample\DeleteSampleAction;
-use App\Actions\Sample\UpdateSampleAction;
-use App\Actions\Task\CreateSampleAction;
 use App\Http\Requests\StoreSampleRequest;
 use App\Http\Requests\UpdateSampleRequest;
 use App\Models\Sample;
+use App\Services\AllSamplesService;
+use App\Services\CreateSampleService;
+use App\Services\DeleteSampleService;
+use App\Services\UpdateSampleService;
 
 class SampleController extends Controller
 {
     public function index()
     {
-        return response()->json(Sample::latest()->get());
+        return response('Hello World');
     }
 
-    public function store(StoreSampleRequest $request, CreateSampleAction $action)
+    public function store(StoreSampleRequest $request,  CreateSampleService $service)
     {
-        $sample = $action->execute($request->toDto());
+        $sample = $service->execute($request->toDto());
 
         return response()->json($sample, 201);
     }
@@ -28,16 +29,21 @@ class SampleController extends Controller
         return response()->json($sample);
     }
 
-    public function update(UpdateSampleRequest $request, Sample $sample, UpdateSampleAction $action)
+    public function list(AllSamplesService $service)
     {
-        $sample = $action->execute($sample, $request->toDto());
+        return response()->json($service->execute());
+    }
+
+    public function update(UpdateSampleRequest $request, Sample $sample, UpdateSampleService $service)
+    {
+        $sample = $service->execute($sample, $request->toDto());
 
         return response()->json($sample);
     }
 
-    public function destroy(Sample $sample, DeleteSampleAction $action)
+    public function destroy(Sample $sample, DeleteSampleService $service)
     {
-        $action->execute($sample);
+        $service->execute($sample);
 
         return response()->json(null, 204);
     }

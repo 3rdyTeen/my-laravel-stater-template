@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Datas\SampleData;
+use App\DTOs\CreateSampleDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSampleRequest extends FormRequest
@@ -28,8 +28,8 @@ class UpdateSampleRequest extends FormRequest
         ];
     }
 
-    public function toDto(): SampleData
+    public function toDto(): CreateSampleDTO
     {
-        return SampleData::fromRequest($this);
+        return CreateSampleDTO::fromRequest($this);
     }
 }
