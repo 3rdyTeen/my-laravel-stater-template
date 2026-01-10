@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Datas;
+namespace App\Domain\Sample\DTOs;
 
-class SampleData
+readonly class CreateSampleDTO
 {
     public function __construct(
         public string $title,
         public ?string $description
-    ) {}
+    ){}
 
     public static function fromRequest($request): self
     {

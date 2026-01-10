@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domain\Sample\Repositories\SampleRepository;
+use App\Domain\Sample\Repositories\SampleRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            SampleRepositoryInterface::class,
+            SampleRepository::class
+        );
     }
 
     /**
