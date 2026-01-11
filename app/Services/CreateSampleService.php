@@ -12,6 +12,6 @@ class CreateSampleService
 
     public function execute(CreateSampleDTO $dto)
     {
-        return $this->sample->create($dto->toArray());
+        return $this->sample->save($dto->toArray());
     }
 }
