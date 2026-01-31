@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\DTOs\CreateSampleDTO;
-use App\Repositories\Interfaces\SampleInterface;
+use App\Interfaces\SampleInterface;
 
 class CreateSampleService
 {

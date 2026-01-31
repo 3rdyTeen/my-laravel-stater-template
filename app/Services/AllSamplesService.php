@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\Interfaces\SampleInterface;
+use App\Interfaces\SampleInterface;
 
 class AllSamplesService
 {

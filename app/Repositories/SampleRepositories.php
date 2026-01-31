@@ -1,31 +1,29 @@
 <?php
 namespace App\Repositories;
 
+use App\Interfaces\SampleInterface;
 use App\Models\Sample;
-use App\Repositories\Interfaces\SampleInterface;
 use Illuminate\Support\Collection;
 
 class SampleRepositories implements SampleInterface
 {
-     public function create(array $data): Sample
+    public function create(array $arg): Sample
     {
-        return Sample::create($data);
-    }
-
-
-    public function update(string $id, array $data): Sample
-    {
-        $sample = Sample::findOrFail($id);
-        return $sample;
-    }
-
-    public function delete(Sample $sample): void
-    {
-        $sample->delete();
+        return Sample::create($arg);
     }
 
     public function list(): Collection
     {
         return Sample::all();
+    }
+
+    public function update(string $id, array $arg): Sample
+    {
+        return Sample::findOrFail($id);
+    }
+
+    public function delete(Sample $sample): void
+    {
+        $sample->delete();
     }
 }

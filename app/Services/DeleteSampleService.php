@@ -1,8 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Interfaces\SampleInterface;
 use App\Models\Sample;
-use App\Repositories\Interfaces\SampleInterface;
 
 class DeleteSampleService
 {
