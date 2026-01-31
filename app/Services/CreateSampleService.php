@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\DTOs\CreateSampleDTO;
-use App\Repositories\Interfaces\SampleInterface;
+use App\Interfaces\SampleInterface;
 
 class CreateSampleService
 {
@@ -12,6 +12,6 @@ class CreateSampleService
 
     public function execute(CreateSampleDTO $dto)
     {
-        return $this->sample->save($dto->toArray());
+        return $this->sample->create($dto->toArray());
     }
 }

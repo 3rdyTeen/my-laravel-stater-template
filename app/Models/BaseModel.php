@@ -1,23 +1,16 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Models;
 
-use App\Repositories\Interfaces\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-abstract class BaseRepository implements BaseRepositoryInterface
+abstract class BaseModel extends Model
 {
-    protected Model $model;
-    protected int $defaultCacheMinutes = 60;//default cache
-
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-    }
+    protected int $defaultCacheMinutes = 60; //default cache
 
     /**
      * Dynamic select query builder
@@ -31,8 +24,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param int|null $paginate
      * @param string|null $cacheKey
      */
-    public function get(array $options = []): Collection|LengthAwarePaginator|Model
+    public static function get(array $options = []): Collection|LengthAwarePaginator|Model
     {
+        $model = new static;
+
         // Default config
         $config = array_merge([
             'select' => ['*'],
@@ -50,7 +45,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $allowedKeys = ['select','relations','where','joins','order','limit','paginate','cacheKey'];
         $config = array_filter($config, fn($k) => in_array($k, $allowedKeys), ARRAY_FILTER_USE_KEY);
 
-        $query = $this->model->newQuery();
+        $query = $model->newQuery();
 
         // Select columns
         $query->select($config['select']);
@@ -82,7 +77,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
         // Cache
         if ($config['cacheKey']) {
-            return Cache::remember($config['cacheKey'], $this->defaultCacheMinutes, fn() =>
+            return Cache::remember($config['cacheKey'], $model, fn() =>
                 $config['paginate'] ? $query->paginate($config['paginate']) : $query->get()
             );
         }
@@ -95,25 +90,25 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $config['paginate'] ? $query->paginate($config['paginate']) : $query->get();
     }
 
-    /**
+       /**
      * Get One record
      * Same Paramater on
      *
      */
-    public function getOne(array $options = []): Model
+    public static function getOne(array $options = []): Model
     {
         $options['getOne'] = true;
-        return $this->get($options);
+        return static::get($options);
     }
 
     /**
      * Insert Query
      *
      */
-    public function insert(array $data): Model
+    public static function insert(array $data): Model
     {
         // Create record
-        return $this->model->create($data);
+        return static::create($data);
     }
 
 
@@ -123,13 +118,13 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param array $attributes Columns to update
      * @param array $where [['column','operator','value'], ...]
      */
-     public function patch(array $data): int
+     public static function patch(array $data): int
     {
         return DB::transaction(function () use ($data) {
             $attributes = $data['attributes'] ?? [];
             $where = $data['where'] ?? [];
 
-            $query = $this->model->newQuery();
+            $query = static::newQuery();
             foreach ($where as $condition) $query->where(...$condition);
 
             return $query->update($attributes);
@@ -142,11 +137,11 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param array $attributes Columns to update
      * @param array $where [['column','operator','value'], ...]
     */
-    public function destroy(array $data): int
+    public static function delete2(array $data): int
     {
         return DB::transaction(function () use ($data) {
             $where = $data['where'] ?? [];
-            $query = $this->model->newQuery();
+            $query = static::newQuery();
             foreach ($where as $condition) $query->where(...$condition);
             return $query->delete();
         });
@@ -159,7 +154,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param array $attributes Columns to update
      * @param array $where [['column','operator','value'], ...]
     */
-    public function delete(array|string|int $data): int
+    public static function custom_delete(array|string|int $data): int
     {
         $deleteParam = [];
         if (is_int($data) || is_string($data)) {
@@ -176,6 +171,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
         if(empty($deleteParam)) return 0;
 
-        return $this->destroy($deleteParam);
+        return static::delete2($deleteParam);
     }
 }

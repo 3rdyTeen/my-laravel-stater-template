@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Repositories\Interfaces\SampleInterface;
+use App\Interfaces\SampleInterface;
 use App\Repositories\SampleRepositories;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
