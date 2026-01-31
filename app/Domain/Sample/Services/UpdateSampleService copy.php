@@ -3,7 +3,7 @@
 namespace App\Domain\Sample\Services;
 
 use App\Domain\Sample\DTOs\CreateSampleDTO;
-use App\Domain\Sample\Repositories\SampleRepositoryInterface;
+use App\Domain\Sample\Interfaces\SampleRepositoryInterface;
 
 class UpdateSampleService
 {

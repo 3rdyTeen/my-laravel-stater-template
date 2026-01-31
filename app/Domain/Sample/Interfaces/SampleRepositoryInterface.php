@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Sample\Repositories;
+namespace App\Domain\Sample\Interfaces;
 
 use App\Domain\Sample\Models\Sample;
 use Illuminate\Support\Collection;

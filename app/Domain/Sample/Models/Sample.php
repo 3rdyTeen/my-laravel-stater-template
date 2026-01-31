@@ -2,9 +2,9 @@
 
 namespace App\Domain\Sample\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Sample extends Model
+class Sample extends BaseModel
 {
     protected $fillable = [
         'title',
